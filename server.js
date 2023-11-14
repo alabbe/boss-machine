@@ -19,7 +19,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //Logging
-app.use(morgan('dev'));
+//app.use(morgan('dev'));
 
 // Mount your existing apiRouter below at the '/api' path.
 const apiRouter = require('./server/api');

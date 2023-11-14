@@ -19,11 +19,11 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', validateMeeting, (req, res) => {
-    res.send(addToDatabase('meetings', createMeeting()));
+    res.status(201).send(addToDatabase('meetings', createMeeting()));
 });
 
 router.delete('/', (req, res) => {
-    res.send(deleteAllFromDatabase('meetings'));
+    res.status(204).send(deleteAllFromDatabase('meetings'));
 });
 
 module.exports = router;

@@ -4,10 +4,9 @@ const router = express.Router();
 
 const validateIdea = (req, res, next) => {
   const name = req.body.bame;
-  const description = req.body.description;
   const numWeeks = req.body.numWeeks;
   const weeklyRevenue = req.body.weeklyRevenue;
-  if (name === "" || description === "" || numWeeks === "" || weeklyRevenue === "") {
+  if (name === "" || numWeeks === "" || weeklyRevenue === "") {
     res.status(400).send('Unable to create new idea with the input data.');
   }
   req.body.numWeeks = Number(numWeeks);
@@ -26,7 +25,7 @@ router.param('ideaId', (req, res, next, id) => {
       res.status(404).send('Idea with the given ID was not found');
     }
   } else {
-    res.status(400).send('Id is missing');
+    res.status(404).send('Id is missing');
   }
 });
 
@@ -35,7 +34,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', validateIdea, (req, res) => {
-  res.send(addToDatabase('ideas', req.body));
+  res.status(201).send(addToDatabase('ideas', req.body));
 })
 
 router.get('/:ideaId', (req, res) => {
@@ -43,11 +42,11 @@ router.get('/:ideaId', (req, res) => {
 });
 
 router.put('/:ideaId', (req, res) => {
-  res.send(updateInstanceInDatabase('ideas', req.body));
+  res.status(201).send(updateInstanceInDatabase('ideas', req.body));
 });
 
 router.delete('/:ideaId', (req, res) => {
-  res.send(deleteFromDatabasebyId('ideas', req.idea.id));
+  res.status(204).send(deleteFromDatabasebyId('ideas', req.idea.id));
 });
 
 module.exports = router;

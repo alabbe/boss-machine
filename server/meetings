@@ -1,10 +1,29 @@
 const express = require('express');
-const { getAllFromDatabase } = require('./db');
+const { getAllFromDatabase, createMeeting, addToDatabase, deleteAllFromDatabase } = require('./db');
 const router = express.Router();
 
+const validateMeeting = (req, res, next) => {
+    const time = req.body.time;
+    const date = req.body.date;
+    const day = req.body.numWeeks;
+    const note = req.body.weeklyRevenue;
+    if (time === "" || date === "" || day === "" || note === "") {
+        res.status(400).send('Unable to create new meeting with the input data.');
+    }
+    req.body.date = Date(date);
+    next();
+};
 
 router.get('/', (req, res, next) => {
     res.send(getAllFromDatabase('meetings'));
-  });
+});
+
+router.post('/', validateMeeting, (req, res) => {
+    res.send(addToDatabase('meetings', createMeeting()));
+});
+
+router.delete('/', (req, res) => {
+    res.send(deleteAllFromDatabase('meetings'));
+});
 
 module.exports = router;

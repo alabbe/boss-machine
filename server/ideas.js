@@ -1,5 +1,6 @@
 const express = require('express');
 const { getAllFromDatabase, addToDatabase, getFromDatabaseById, updateInstanceInDatabase, deleteFromDatabasebyId } = require('./db');
+const checkMillionDollarIdea = require('./checkMillionDollarIdea');
 const router = express.Router();
 
 const validateIdea = (req, res, next) => {
@@ -9,8 +10,6 @@ const validateIdea = (req, res, next) => {
   if (name === "" || numWeeks === "" || weeklyRevenue === "") {
     res.status(400).send('Unable to create new idea with the input data.');
   }
-  req.body.numWeeks = Number(numWeeks);
-  req.body.weeklyRevenue = Number(weeklyRevenue);
   next();
 };
 
@@ -33,7 +32,7 @@ router.get('/', (req, res) => {
   res.send(getAllFromDatabase('ideas'));
 });
 
-router.post('/', validateIdea, (req, res) => {
+router.post('/', validateIdea, checkMillionDollarIdea, (req, res) => {
   res.status(201).send(addToDatabase('ideas', req.body));
 })
 
@@ -41,7 +40,7 @@ router.get('/:ideaId', (req, res) => {
   res.send(req.idea);
 });
 
-router.put('/:ideaId', (req, res) => {
+router.put('/:ideaId', checkMillionDollarIdea, (req, res) => {
   res.status(201).send(updateInstanceInDatabase('ideas', req.body));
 });
 

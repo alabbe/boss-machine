@@ -5,8 +5,8 @@ const router = express.Router();
 const validateMeeting = (req, res, next) => {
     const time = req.body.time;
     const date = req.body.date;
-    const day = req.body.numWeeks;
-    const note = req.body.weeklyRevenue;
+    const day = req.body.day;
+    const note = req.body.note;
     if (time === "" || date === "" || day === "" || note === "") {
         res.status(400).send('Unable to create new meeting with the input data.');
     }
